@@ -1,5 +1,5 @@
 services:
-  app-override:
+  app-dev:
     extends:
       file: docker-compose.yml
       service: app
@@ -11,3 +11,17 @@ services:
       - "8080:8080"
     volumes:
       - ./app:/app
+
+  caddy:
+    image: caddy:2.7.6
+    volumes:
+      - ./services/caddy/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - app-dev
+
+volumes:
+  caddy_data:

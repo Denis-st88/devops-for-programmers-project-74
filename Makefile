@@ -23,7 +23,6 @@ build-prod: ## Build production
 push: ## Push production image
 	@docker-compose -f docker-compose.yml push app
 
-
-.PHONY: pull-and-run
-pull-and-run: ## Pull production image and run
+.PHONY: pull
+pull: ## Pull production image and run
 	@docker run -p 8080:8080 denis88dev/devops-for-programmers-project-74:latest npm run dev

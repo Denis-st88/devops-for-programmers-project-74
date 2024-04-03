@@ -25,10 +25,12 @@ jobs:
       - name: Run tests
         run: make ci
 
-      - name: Build and push app
+      - name: Build and push
         uses: docker/build-push-action@v5
         with:
           context: .
           file: Dockerfile.production
+          cache-from: type=registry,ref=${{ env.APP_IMAGE_NAME }}
+          cache-to: type=inline
           push: true
           tags: ${{ env.APP_IMAGE_NAME }}:latest
