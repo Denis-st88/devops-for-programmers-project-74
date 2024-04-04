@@ -1,1 +1,5 @@
 app/node_modules
+.git
+Makefile
+docker-compose.*
+.idea
