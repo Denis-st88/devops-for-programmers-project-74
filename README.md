@@ -10,20 +10,14 @@
 
 ## Run project locally:
 
+- After command open https://localhost
+
 ```
-make prepare-env
 make dev
-# open https://localhost
 ```
 
 
 ## Production
-
-### Build image:
-
-```
-make build-prod
-```
 
 ### Run tests:
 
