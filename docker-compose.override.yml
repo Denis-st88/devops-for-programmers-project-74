@@ -1,12 +1,11 @@
+version: "3.8"
+
 services:
-  app-dev:
-    extends:
-      file: docker-compose.yml
-      service: app
+  app:
     build:
       context: .
       dockerfile: Dockerfile
-    command: ["npm", "run", "dev"]
+    command: bash -c 'sleep 3 && npm start'
     ports:
       - "8080:8080"
     volumes:
@@ -21,7 +20,7 @@ services:
       - "80:80"
       - "443:443"
     depends_on:
-      - app-dev
+      - app
 
 volumes:
   caddy_data:

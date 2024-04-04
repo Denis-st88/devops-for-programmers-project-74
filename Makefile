@@ -7,22 +7,38 @@ help:
 	@cat $(MAKEFILE_LIST) | grep -e "^[a-zA-Z_\-]*: *.*## *" | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 
-.PHONY: run-dev
-run-dev: ## Run dev
-	@docker-compose up
-
-.PHONY: ci
-ci: ## Run ci
-	@docker-compose -f docker-compose.yml up --abort-on-container-exit
+# Prod
 
 .PHONY: build-prod
-build-prod: ## Build production
-	@docker-compose -f docker-compose.yml build app
+build-prod: ## Run production build
+	@docker-compose -f docker-compose.yml build
 
-.PHONY: push
-push: ## Push production image
+.PHONY: ci
+ci: ## Run tests
+	@docker-compose -f docker-compose.yml up --abort-on-container-exit
+
+.PHONY: test-prod
+test-prod: ## Run production test
+	@$(MAKE) -f $(THIS_FILE) build-prod
+	@$(MAKE) -f $(THIS_FILE) ci
+
+.PHONY: push-prod
+push-prod: ## Push production image
 	@docker-compose -f docker-compose.yml push app
 
-.PHONY: pull
-pull: ## Pull production image and run
-	@docker run -p 8080:8080 denis88dev/devops-for-programmers-project-74:latest npm run dev
+
+
+# Dev
+
+.PHONY: build-dev
+build-dev: ## Build dev
+	@docker-compose -f docker-compose.yml -f docker-compose.override.yml build
+
+.PHONY: up-dev
+up-dev: ## Up dev
+	@docker-compose -f docker-compose.yml -f docker-compose.override.yml up
+
+.PHONY: start-dev
+start-dev: ## Start dev build
+	@$(MAKE) -f $(THIS_FILE) build-dev
+	@$(MAKE) -f $(THIS_FILE) up-dev
