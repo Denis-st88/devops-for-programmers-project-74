@@ -15,10 +15,12 @@ build-prod: ## Run production build
 
 .PHONY: ci
 ci: ## Run tests
+	@$(MAKE) -f $(THIS_FILE) copy-env
 	@docker-compose -f docker-compose.yml up --abort-on-container-exit
 
 .PHONY: test-prod
 test-prod: ## Run production test
+	@$(MAKE) -f $(THIS_FILE) copy-env
 	@$(MAKE) -f $(THIS_FILE) build-prod
 	@$(MAKE) -f $(THIS_FILE) ci
 
@@ -40,5 +42,12 @@ up-dev: ## Up dev
 
 .PHONY: start-dev
 start-dev: ## Start dev build
+	@$(MAKE) -f $(THIS_FILE) copy-env
 	@$(MAKE) -f $(THIS_FILE) build-dev
 	@$(MAKE) -f $(THIS_FILE) up-dev
+
+
+
+.PHONY: copy-env
+copy-env: ## Copy to .env
+	@cp .env.example .env
